@@ -98,8 +98,8 @@ class SkipList
 
         height = height + 1;
 
-        p1 = new Node("-oo", null);
-        p2 = new Node("+oo", null);
+        p1 = new Node(negInf, null);
+        p2 = new Node(posInf, null);
 
         p1.right = p2;
         p1.down  = head;
@@ -150,16 +150,18 @@ class SkipList
 
   void delete(Node x)
   {
-    Node p;
-    p=findEntry(x.key);
-    if (!p.key.equals(key)) {
+    Node p=findEntry(x.key);
+    // node is not found
+    if (!p.key.equals(x.key)) {
       System.out.println("The node is not found");
+      return;
     }
-    while (p!=null) {
-      x=x.up;
-      x.left.right=x.right;
-      x.right.left=p.left;
-      p=x;
+    while (p.down != null)
+      p = p.down;
+    // link the left to right from level 0
+    while (p !=null) {
+      p.left.right = p.right;
+      p = p.up;
     }
   }
 
@@ -183,16 +185,126 @@ class SkipList
         p.right.key.compareTo(key) <= 0 )
       {
         p = p.right;
-        println(">>>> " + p.key);
+        //println(">>>> " + p.key);
       }
       if ( p.down != null )
       {  
         p = p.down;
-        println("vvvv " + p.key);
+        //println("vvvv " + p.key);
       } else
         break;
     }
     // p.key <= key 
     return p;
+  }
+
+
+
+  public void printHorizontal()
+  {
+    String s = "";
+    int i;
+
+    Node p;
+
+    /* ----------------------------------
+     Record the position of each entry
+     ---------------------------------- */
+    p = head;
+
+    while ( p.down != null )
+    {
+      p = p.down;
+    }
+
+    i = 0;
+    while ( p != null )
+    {
+      p.pos = i++;
+      p = p.right;
+    }
+
+    /* -------------------
+     Print...
+     ------------------- */
+    p = head;
+
+    while ( p != null )
+    {
+      s = getOneRow( p );
+      System.out.println("level " + p.level + " | "  + s);
+      p = p.down;
+    }
+  }
+
+  public String getOneRow( Node p )
+  {
+    String s;
+    int a, b, i;
+
+    a = 0;
+
+    s = "" + p.key;
+    p = p.right;
+
+
+    while ( p != null )
+    {
+      Node q;
+
+      q = p;
+      while (q.down != null)
+        q = q.down;
+      b = q.pos;
+
+      s = s + " <-";
+
+
+      for (i = a+1; i < b; i++)
+        s = s + "--------";
+
+      s = s + "> " + p.key;
+
+      a = b;
+
+      p = p.right;
+    }
+
+    return(s);
+  }
+
+  public void printVertical()
+  {
+    String s = "";
+
+    Node p;
+
+    p = head;
+
+    while ( p.down != null )
+      p = p.down;
+
+    while ( p != null )
+    {
+      s = getOneColumn( p );
+      System.out.println(s);
+
+      p = p.right;
+    }
+  }
+
+
+  public String getOneColumn( Node p )
+  {
+    String s = "";
+
+    while ( p != null )
+    {
+      s = s + " " + p.key;
+
+      p = p.up;
+    }
+
+    return(s);
   }
 }

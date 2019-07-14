@@ -17,7 +17,7 @@ void GetAllPointsAndSort() {
 void printAllPoints(Point[] arr) { 
   int n = arr.length; 
   for (int i=0; i<n; ++i) 
-    print(arr[i].x + " " + (arr[i].Line()!= null ? "L:" + arr[i].Line().name + " " : "none") ); 
+    print(arr[i].x + " " + (arr[i].Line()!= null ? "L:" + arr[i].Line().name + " | "  : "none")  ); 
   println();
 } 
 

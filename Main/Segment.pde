@@ -9,13 +9,15 @@
 class Point {
   public float x, y;
   private boolean left;
+  public String name;
   private Segment line;
 
-  Point(float x, float y, boolean left, Segment line) {
+  Point(float x, float y, boolean left, String name, Segment line) {
     this.x = x;
     this.y = y;
     this.left = left;
     this.line = line;
+    this.name = name;
   }
 
   boolean isLeft() {
@@ -40,8 +42,9 @@ class Segment {
     y1 = y1Cord;
     y2 = y2Cord;
     this.name = name;
-    p1 = new Point(x1, y1, isLeft(x1,x2), this);
-    p2 = new Point(x2, y2, isLeft(x2,x1), this);
+    String Key = isLeft(x1, x2)? "" + y1: "" + y2;
+    p1 = new Point(x1, y1, isLeft(x1, x2), Key, this);
+    p2 = new Point(x2, y2, isLeft(x2, x1), Key, this);
     // Set the color to the starting color
     lineColor = color(182, 125, 67);
   }
@@ -52,8 +55,9 @@ class Segment {
     x2 = x2Cord;
     y1 = y1Cord;
     y2 = y2Cord;
-    p1 = new Point(x1, y1, isLeft(x1,x2), this);
-    p2 = new Point(x2, y2, isLeft(x2,x1), this);
+    String Key = isLeft(x1, x2)? "" + y1: "" + y2;
+    p1 = new Point(x1, y1, isLeft(x1, x2),Key, this);
+    p2 = new Point(x2, y2, isLeft(x2, x1),Key, this);
     lineColor = newSegmentsColor;
     this.name = name;
   }

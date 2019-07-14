@@ -3,6 +3,7 @@ class Node
   public String key;                 
   public Segment value;
   public int level;
+  public int pos; 
 
   public Node up, down, left, right;           
 
@@ -32,6 +33,6 @@ class Node
   }
 
   public boolean equals(Node node) {
-    return (node.getKey() == key) && (node.getValue().equals(value));
+    return (node.getKey().equals(key)) && (node.getValue().equals(value));
   }
 }
