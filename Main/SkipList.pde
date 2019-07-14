@@ -50,7 +50,7 @@ class SkipList
   public Segment getNext(Node p) {
     while (p.down!=null) {
       p=p.down;
-    }    
+    } 
     return p.right.value;
   }
 

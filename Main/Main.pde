@@ -90,12 +90,29 @@ void TrigerEvents(Point p) {
     // find succ and pred and check Whether it is intersecting
     T.insert(event);
     T.printHorizontal();
-    //Are_Intersecting(T.getNext(event), T.getPrev(event));
+    Segment next = T.getNext(event);
+    Segment prev =  T.getPrev(event);
+
+    if (next != null)
+      //println(next.name);
+      PaintTwoLines(next, p.line);
+    if (prev != null)
+      //println(prev.name);
+      PaintTwoLines(prev, p.line);
     c.setOutput("Born Event : node  <" + String.valueOf(p.name)+">\n" + T.VisualizeList());
   } else {  // If it's a right end of its line
     println("\n-------------Death Event : node  <" + String.valueOf(p.name)+">");
     //delete the segment from the skiplist
     // Check if its predecessor and successor intersect with each other
+    Segment next = T.getNext(event);
+    Segment prev =  T.getPrev(event);
+    //if (next != null)
+    //println(next.name);
+    //PaintTwoLines(next, p.line);
+    //if (prev != null)
+    //println(prev.name);
+    if (next != null && prev != null)
+      PaintTwoLines(next, prev);
     T.delete(event);
     T.printHorizontal();
     c.setOutput("Death Event : node  <" + String.valueOf(p.name)+">\n" + T.VisualizeList());
@@ -103,6 +120,12 @@ void TrigerEvents(Point p) {
   }
 }
 
+void PaintTwoLines(Segment s1, Segment s2) {
+  if (Are_Intersecting(s1, s2)) {
+    s1.highlight();
+    s2.highlight();
+  }
+}
 
 boolean GetSegments() {
   if (c.readString().equals("")) {

@@ -56,8 +56,8 @@ class Segment {
     y1 = y1Cord;
     y2 = y2Cord;
     String Key = isLeft(x1, x2)? "" + y1: "" + y2;
-    p1 = new Point(x1, y1, isLeft(x1, x2),Key, this);
-    p2 = new Point(x2, y2, isLeft(x2, x1),Key, this);
+    p1 = new Point(x1, y1, isLeft(x1, x2), Key, this);
+    p2 = new Point(x2, y2, isLeft(x2, x1), Key, this);
     lineColor = newSegmentsColor;
     this.name = name;
   }
@@ -114,6 +114,11 @@ class Segment {
     // Draw the Segment
     line(x1, y1, x2, y2);
 
+    // Draw the Name of line
+    fill(0);
+    text(name, x1 + 5, y1 - 5);
+
+    fill(255);
     // If we should show the end points, draw them.
     if (showEndPoints) {
       ellipse(x1, y1, 10, 10);
