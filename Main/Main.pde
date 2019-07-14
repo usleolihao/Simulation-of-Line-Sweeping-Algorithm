@@ -79,18 +79,23 @@ void SweepOnce() {
 
 void TrigerEvents(Point p) {
   //Events
-  Node event = new Node(String.valueOf(p.y), p.line);
-  //println(p.isLeft());
+  Node event = new Node(String.valueOf(p.name), p.line);
+
   if (p.isLeft()) {
+    println("\n-------------Born Event : node  <" + String.valueOf(p.name)+">");
     // Check if this points intersects with its predecessor and successor
     //Insert s to status
     //find succ and pred and check Whether it is intersecting
     T.insert(event);
+    T.printHorizontal();
+    println();
     //Are_Intersecting(T.getNext(event), T.getPrev(event));
   } else {  // If it's a right end of its line
+    println("\n-------------Death Event : node  <" + String.valueOf(p.name)+">");
     //delete the segment from the skiplist
     // Check if its predecessor and successor intersect with each other
     T.delete(event);
+    T.printHorizontal();
     //Are_Intersecting(T.getNext(event), T.getPrev(event));
   }
 }
