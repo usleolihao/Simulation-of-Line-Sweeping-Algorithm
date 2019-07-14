@@ -19,6 +19,7 @@ class Console
   boolean active;
   int font;
   int gap;
+  String Output;
 
   String Tip;
 
@@ -32,6 +33,7 @@ class Console
     Tip = "Here is the result. ";
     numChars = 0;
     gap = font + 6;
+    Output = "";
   }
 
   void display()
@@ -60,6 +62,17 @@ class Console
     text("Press F1 to move/stop line sweep", 515, y + 5);
     text("Press F2 to sweep line once", 515, y + 5 + font);
     text("Press F3 to Reset Canvas", 515, y + 5 + 2 * font);
+
+    // Output of Sweeping
+    fill(15,111,55,255);
+    rect(803, 1, 395, 466);
+    fill(255);
+    textSize(15);
+    text("Output:",805, 15);
+    textSize(12);
+    fill(69, 245, 66,255);
+    text(Output,805, 18, 395, 466);
+
   }
 
   void addChar(char c)
@@ -94,6 +107,7 @@ class Console
   void reset()
   {
     chars = "";
+    numChars = 0;
   }
 
   void deleteChar()
@@ -107,6 +121,10 @@ class Console
 
   void setTip(String tip) {
     Tip = tip;
+  }
+  
+  void setOutput(String out) {
+    Output = out;
   }
 }
 

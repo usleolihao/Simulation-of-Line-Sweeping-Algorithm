@@ -8,7 +8,7 @@ int SweepLine = -1;
 
 void settings() { 
   // Set the window size
-  size(800, 470);
+  size(1200, 470);
 }
 
 
@@ -68,7 +68,9 @@ void keyPressed()
 }
 
 void SweepOnce() {
-  if (SweepLine < Q.length -1 ) {
+  if (Q == null) {
+    c.setTip("Not Start yet.");
+  } else if (SweepLine < Q.length -1 ) {
     SweepLine++;
     Point p = Q[SweepLine];
     c.setTip("Meet the Points " + (SweepLine + 1) + " x:" + p.x + " y:" + p.y);
@@ -84,18 +86,19 @@ void TrigerEvents(Point p) {
   if (p.isLeft()) {
     println("\n-------------Born Event : node  <" + String.valueOf(p.name)+">");
     // Check if this points intersects with its predecessor and successor
-    //Insert s to status
-    //find succ and pred and check Whether it is intersecting
+    // Insert s to status
+    // find succ and pred and check Whether it is intersecting
     T.insert(event);
     T.printHorizontal();
-    println();
     //Are_Intersecting(T.getNext(event), T.getPrev(event));
+    c.setOutput("Born Event : node  <" + String.valueOf(p.name)+">\n" + T.VisualizeList());
   } else {  // If it's a right end of its line
     println("\n-------------Death Event : node  <" + String.valueOf(p.name)+">");
     //delete the segment from the skiplist
     // Check if its predecessor and successor intersect with each other
     T.delete(event);
     T.printHorizontal();
+    c.setOutput("Death Event : node  <" + String.valueOf(p.name)+">\n" + T.VisualizeList());
     //Are_Intersecting(T.getNext(event), T.getPrev(event));
   }
 }
@@ -128,5 +131,6 @@ void resetCanvas() {
   Q = new Point[0];
   SweepLine = -1;
   c.setTip("Cleaned.");
+  c.setOutput("");
   surface.setTitle("Enter a new Segment File | Programming assignment #1.");
 }

@@ -81,8 +81,8 @@ class SkipList
     r= new Random();
     p=findEntry(x.key);
     //if the key is already exist,then revise it
-    if (x.key==p.key) {
-      p.value=x.value;
+    if (x.key.equals(p.key)) {
+      p.value = x.value;
       return;
     }
     x.left=p;
@@ -110,6 +110,9 @@ class SkipList
         head.up = p1;
         tail.up = p2;
 
+        p1.setlevel(height);
+        p2.setlevel(height);
+
         head = p1;
         tail = p2;
       }
@@ -132,6 +135,7 @@ class SkipList
       e.left = p;
       e.right = p.right;
       e.down = x;
+      e.setlevel(height);
 
       /* ---------------------------------------
        Change the neighboring links..
@@ -139,6 +143,7 @@ class SkipList
       p.right.left = e;
       p.right = e;
       x.up = e;
+
 
       x = e;    // Set q up for the next iteration
 
@@ -183,7 +188,7 @@ class SkipList
     p = head;
     while ( true ) {
       while ( p.right.key != posInf && 
-        p.right.key.compareTo(key) <= 0 )
+        int(p.right.key) <= int(key) )
       {
         p = p.right;
         //println(">>>> " + p.key);
@@ -200,9 +205,7 @@ class SkipList
   }
 
 
-
-  public void printHorizontal()
-  {
+  public String VisualizeList() {
     String s = "";
     int i;
 
@@ -232,10 +235,17 @@ class SkipList
 
     while ( p != null )
     {
-      s = getOneRow( p );
-      System.out.println("level " + p.level + " | "  + s);
+      String temp = getOneRow( p );
+      s += "level " + p.level + " | "  + temp + "\n";
       p = p.down;
     }
+
+    return s;
+  }
+
+  public void printHorizontal()
+  {
+    println(VisualizeList());
   }
 
   public String getOneRow( Node p )
@@ -269,41 +279,6 @@ class SkipList
       a = b;
 
       p = p.right;
-    }
-
-    return(s);
-  }
-
-  public void printVertical()
-  {
-    String s = "";
-
-    Node p;
-
-    p = head;
-
-    while ( p.down != null )
-      p = p.down;
-
-    while ( p != null )
-    {
-      s = getOneColumn( p );
-      System.out.println(s);
-
-      p = p.right;
-    }
-  }
-
-
-  public String getOneColumn( Node p )
-  {
-    String s = "";
-
-    while ( p != null )
-    {
-      s = s + " " + p.key;
-
-      p = p.up;
     }
 
     return(s);

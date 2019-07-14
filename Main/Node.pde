@@ -32,6 +32,7 @@ class Node
     return oldValue;
   }
 
+
   public boolean equals(Node node) {
     return (node.getKey().equals(key)) && (node.getValue().equals(value));
   }
