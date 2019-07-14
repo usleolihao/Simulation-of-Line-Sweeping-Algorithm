@@ -161,6 +161,7 @@ class SkipList
     // link the left to right from level 0
     while (p !=null) {
       p.left.right = p.right;
+      p.right.left = p.left;
       p = p.up;
     }
   }
