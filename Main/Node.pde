@@ -1,7 +1,7 @@
 class Node
 {
   public String key;                 
-  public Segment value;
+  private Segment value;
   public int level;
   public int pos; 
 
@@ -25,6 +25,7 @@ class Node
   public void setlevel(int l) {
     level = l;
   }
+  
   public Segment setValue(Segment val) 
   {
     Segment oldValue = value;
@@ -32,8 +33,8 @@ class Node
     return oldValue;
   }
 
-
   public boolean equals(Node node) {
     return (node.getKey().equals(key)) && (node.getValue().equals(value));
   }
+  
 }

@@ -76,7 +76,7 @@ public boolean Are_Intersecting(Segment l1, Segment l2) {
  * This method will return a String based on the parameters passed in
  * if point is above the segment: "1"
  * if below: "-1"
- * if on hte line: "0"
+ * if on the line: "0"
  * else(left or right of line/not on graph): "ERROR"
  * @param line: The line that will be indexed
  * @param p: The point to compare with

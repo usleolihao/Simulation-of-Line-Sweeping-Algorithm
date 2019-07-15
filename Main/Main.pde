@@ -81,49 +81,45 @@ void SweepOnce() {
 
 void TrigerEvents(Point p) {
   //Events
-  Node event = new Node(String.valueOf(p.name), p.line);
+  String k = String.valueOf(p.name);
+  Node event = new Node(k, p.line);
 
   if (p.isLeft()) {
-    println("\n-------------Born Event : node  <" + String.valueOf(p.name)+">");
+    println("\n-------------Born Event : node  <" + k +">");
     // Check if this points intersects with its predecessor and successor
     // Insert s to status
     // find succ and pred and check Whether it is intersecting
-    T.insert(event);
+    T.insert(event, p);
     T.printHorizontal();
+
     Segment next = T.getNext(event);
     Segment prev =  T.getPrev(event);
-
     if (next != null)
-      //println(next.name);
       PaintTwoLines(next, p.line);
     if (prev != null)
-      //println(prev.name);
       PaintTwoLines(prev, p.line);
-    c.setOutput("Born Event : node  <" + String.valueOf(p.name)+">\n" + T.VisualizeList());
+    c.setOutput("Born Event : node  <" + k +">\n" + T.VisualizeList());
   } else {  // If it's a right end of its line
-    println("\n-------------Death Event : node  <" + String.valueOf(p.name)+">");
+    println("\n-------------Death Event : node  <" + k +">");
     //delete the segment from the skiplist
     // Check if its predecessor and successor intersect with each other
     Segment next = T.getNext(event);
     Segment prev =  T.getPrev(event);
-    //if (next != null)
-    //println(next.name);
-    //PaintTwoLines(next, p.line);
-    //if (prev != null)
-    //println(prev.name);
-    if (next != null && prev != null)
+    if (next != null && prev != null) 
       PaintTwoLines(next, prev);
-    T.delete(event);
+    T.delete(event, p);
     T.printHorizontal();
-    c.setOutput("Death Event : node  <" + String.valueOf(p.name)+">\n" + T.VisualizeList());
-    //Are_Intersecting(T.getNext(event), T.getPrev(event));
+    c.setOutput("Death Event : node  <" + k +">\n" + T.VisualizeList());
   }
 }
 
 void PaintTwoLines(Segment s1, Segment s2) {
+  println("Comparing " + s1.name + " , " + s2.name);
   if (Are_Intersecting(s1, s2)) {
     s1.highlight();
     s2.highlight();
+    println( s1.name + " , " + s2.name + " are intersecting.");
+    c.setTip( s1.name + " , " + s2.name + " are intersecting.");
   }
 }
 

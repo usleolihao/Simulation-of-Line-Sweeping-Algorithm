@@ -47,19 +47,25 @@ class SkipList
   //---------------Methods-----------------
 
   //will return the next node
-  public Segment getNext(Node p) {
+  public Segment getNext(Node x) {
+    print("find next : ");
+    Node p = findEntry(x.key);
     while (p.down!=null) {
       p=p.down;
     } 
+    println(" | get Next " + p.right.key);
     return p.right.value;
   }
 
 
   //will return the previous node
-  public Segment getPrev(Node p) {
+  public Segment getPrev(Node x) {
+    print("find prev : ");
+    Node p = findEntry(x.key);
     while (p.down!=null) {
       p=p.down;
     }    
+    println(" | get Prev " + p.left.key);
     return p.left.value;
   }
 
@@ -73,13 +79,13 @@ class SkipList
     return (width == 0);
   }
 
-  void insert(Node x)
+  void insert(Node x, Point y)
   {
     Random r;
     int i;
     Node p;
     r= new Random();
-    p=findEntry(x.key);
+    p=findEntry(y);
     //if the key is already exist,then revise it
     if (x.key.equals(p.key)) {
       p.value = x.value;
@@ -153,9 +159,9 @@ class SkipList
     width=width+1;
   }
 
-  void delete(Node x)
+  void delete(Node x, Point y)
   {
-    Node p=findEntry(x.key);
+    Node p=findEntry(y);
     // node is not found
     if (!p.key.equals(x.key)) {
       System.out.println("The node is not found");
@@ -171,37 +177,64 @@ class SkipList
     }
   }
 
-  public Segment get (String key) 
-  {
-    Node p;
-    p = findEntry(key);
-
-    if ( key.equals( p.getKey() ) )
-      return(p.value);
-    else
-      return null;
-  }
 
   public Node findEntry(String key)
   {
-    Node p;
-    p = head;
+    Node ite;
+    ite = head;
+    print("Head:" + ite.key + " ");
     while ( true ) {
-      while ( p.right.key != posInf && 
-        int(p.right.key) <= int(key) )
+      while ( !ite.right.key.equals(posInf) && !ite.key.equals(key))
       {
-        p = p.right;
-        //println(">>>> " + p.key);
+        print(">>>> " + ite.right.key + " ");
+        ite = ite.right;
       }
-      if ( p.down != null )
+
+      if (ite.value != null && ite.down != null )
       {  
-        p = p.down;
+        println();
+        ite = ite.down;
         //println("vvvv " + p.key);
-      } else
+      } else {
+        print(">>>> " + ite.right.key + " ");
         break;
+      }
     }
     // p.key <= key 
-    return p;
+    print("| to find " + key  + " found: " + ite.key);
+    return ite;
+  }
+
+
+  public Node findEntry(Point p)
+  {
+    Node ite;
+    ite = head;
+    print("Head:" + ite.key + " ");
+    while ( true ) {
+      while ( !ite.right.key.equals(posInf))
+      {
+        print(">>>> " + ite.right.key + " ");
+        if (Is_Above(ite.right.getValue(), p).equals("1")) {
+          print(">>>> " + ite.right.key + " ");
+          break;
+        } else
+          ite = ite.right;
+      }
+
+      if (ite.value != null && ite.down != null )
+      {  
+        println();
+        ite = ite.down;
+        //println("vvvv " + p.key);
+      } else {
+        print(">>>> " + ite.right.key + " ");
+        break;
+      }
+    }
+    // p.key <= key 
+    println("| Node: " + ite.key);
+    return ite;
   }
 
 
