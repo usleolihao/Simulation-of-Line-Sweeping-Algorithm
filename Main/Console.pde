@@ -6,7 +6,7 @@
  *
  * Descripition: A Console which promote user to input 
  *
- * The console class is provided by 
+ * The basic console class is provided by 
  *                         https://forum.processing.org/one/topic/taking-user-input.html
  *
  *--------------------------------------------------------------------------------------*/
@@ -20,7 +20,7 @@ class Console
   int font;
   int gap;
   String Output;
-
+  String Record;
   String Tip;
 
   Console(float x, float y, int font)
@@ -34,6 +34,7 @@ class Console
     numChars = 0;
     gap = font + 6;
     Output = "";
+    Record = "";
   }
 
   void display()
@@ -58,21 +59,25 @@ class Console
     fill(100);
     rect(510, y - 10, 280, 60);
     fill(0);
-    textSize(13);
+    textSize(11);
     text("Press F1 to move/stop line sweep", 515, y + 5);
-    text("Press F2 to sweep line once", 515, y + 5 + font);
-    text("Press F3 to Reset Canvas", 515, y + 5 + 2 * font);
+    text("Press F2 to sweep line once", 515, y + 5 + 11);
+    text("Press F3 to Reset Canvas", 515, y + 5 + 2 * 11);
+    text("Press Enter with empty filename to reload", 515, y + 5 + 3 * 11);
 
     // Output of Sweeping
-    fill(15,111,55,255);
+    fill(15, 111, 55, 255);
     rect(803, 1, 395, 466);
     fill(255);
     textSize(15);
-    text("Output:",805, 15);
+    text("Output:", 805, 15);
     textSize(12);
-    fill(69, 245, 66,255);
-    text(Output,805, 18, 395, 466);
-
+    fill(69, 245, 66, 255);
+    text(Output, 805, 18, 395, 300);
+    fill(255);
+    text("----------------Record-----------------------------------", 805, 300, 395, 15);
+    fill(69, 245, 255, 255);
+    text(Record, 805, 300, 395, 150);
   }
 
   void addChar(char c)
@@ -84,32 +89,41 @@ class Console
       Tip = "The maximum length has been reached";
   }
 
+  // ReadString by Console
   String readString()
   {
     return chars;
   }
 
+  // Check Console is Activate or Not
   boolean isActive()
   {
     return active;
   }
 
+  // Activate the Console
   void activate()
   {
     active = true;
   }
 
+  // Deactivate the Console
   void deactivate()
   {
     active = false;
   }
 
+  // Reset the Console
   void reset()
   {
     chars = "";
     numChars = 0;
+    Tip = "";
+    Output ="";
+    Record ="";
   }
-
+  
+  //Delete Char one by one
   void deleteChar()
   {
     if (numChars > 0)
@@ -119,16 +133,26 @@ class Console
     }
   }
 
+  // Set Tip for Console
   void setTip(String tip) {
     Tip = tip;
   }
-  
+
+  // Set Record for intersection lines
+  void setRecord(String rec) {
+    Record = Record + "\n" + rec;
+  }
+
+  // Set SkipList output For debug
   void setOutput(String out) {
     Output = out;
   }
 }
 
 
+/********************************************************************
+ *  This method will Analyze the key input
+*******************************************************************/
 String keyAnalyzer(char c)
 {
   if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9')

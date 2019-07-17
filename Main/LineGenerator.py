@@ -13,7 +13,7 @@ def generateLines(**options):
 		x2 = random.randint(0,800)
 		y1 = random.randint(0,400)
 		y2 = random.randint(0,400)
-		content += '{},{},{},{}'.format(x1,x2,y1,y2)
+		content += '{},{},{},{}'.format(x1,y1,x2,y2)
 		if i != num-1:
 			content += '\n'
 

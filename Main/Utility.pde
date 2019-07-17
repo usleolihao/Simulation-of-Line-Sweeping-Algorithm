@@ -1,3 +1,14 @@
+/*--------------------------------------------------------------------------------------
+ * Function provided by Jacob Rafko from Start_Function
+ *         
+ *
+ * Class: Utility
+ *
+ * Descripition: this class includes function to read a file, output information, 
+ *               Comparison of the segments etc...
+ *
+ *--------------------------------------------------------------------------------------*/
+
 //For the Intersections
 import java.awt.geom.Line2D;
 
@@ -30,13 +41,13 @@ void makeSegmentsAppear(String fileName) {
     Segments = new Segment[size];
     Q = new Point[size*2];
 
-    //Input: x1,x2,y1,y2
+    //Input: x1,y1,x2,y2
     println("Information of the Segments");
     while ( (fileSegment = reader.readLine()) != null) {
       String[] fields = fileSegment.split(",");
       x1 = Float.parseFloat(fields[0]);
-      x2 = Float.parseFloat(fields[1]);
-      y1 = Float.parseFloat(fields[2]);
+      y1 = Float.parseFloat(fields[1]);
+      x2 = Float.parseFloat(fields[2]);
       y2 = Float.parseFloat(fields[3]);
 
       // i plus 1 is their name
@@ -44,9 +55,9 @@ void makeSegmentsAppear(String fileName) {
       String theName = "" + (i + 1);
 
       // Add new horizontal line
-      Segments[i] = new Segment(theName, x1, x2, y1, y2);
+      Segments[i] = new Segment(theName, x1, y1, x2, y2);
 
-      println(theName + " - x1:" + x1 + " x2:" + x2 + " y1:"+y1+" y2:"+y2);
+      println(theName + " - x1:" + x1  + " y1:"+ y1 + " x2:" + x2+" y2:"+y2);
       i++;
     }
 
