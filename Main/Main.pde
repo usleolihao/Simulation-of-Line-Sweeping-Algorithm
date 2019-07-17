@@ -82,7 +82,10 @@ void SweepOnce() {
 void TrigerEvents(Point p) {
   //Events
   String k = String.valueOf(p.name);
+  
+  
   Node event = new Node(k, p.line);
+ 
 
   if (p.isLeft()) {
     println("\n-------------Born Event : node  <" + k +">");
