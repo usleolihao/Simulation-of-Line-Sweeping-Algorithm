@@ -12,15 +12,6 @@
 //For the Intersections
 import java.awt.geom.Line2D;
 
-
-// Arrays to hold our two sets of lines.
-static Segment[] Segments;
-// Arrays to hold our Points
-static Point[] Q;
-
-//The size of the Segment Lines
-int SegmentsTotal;
-
 //This will plot all the lines from the file name passed into it
 void makeSegmentsAppear(String fileName) {
 
@@ -38,7 +29,7 @@ void makeSegmentsAppear(String fileName) {
     fileSegment = reader.readLine();
     size = Integer.parseInt(fileSegment);
     SegmentsTotal = size;
-    Segments = new Segment[size];
+    SEG = new Segment[size];
     Q = new Point[size*2];
 
     //Input: x1,y1,x2,y2
@@ -55,7 +46,7 @@ void makeSegmentsAppear(String fileName) {
       String theName = "" + (i + 1);
 
       // Add new horizontal line
-      Segments[i] = new Segment(theName, x1, y1, x2, y2);
+      SEG[i] = new Segment(theName, x1, y1, x2, y2);
 
       println(theName + " - x1:" + x1  + " y1:"+ y1 + " x2:" + x2+" y2:"+y2);
       i++;

@@ -45,52 +45,25 @@ class SkipList
    *  This method will return the segment that next the point
    *******************************************************************/
   public Segment getNext(Node x) {
-    print("find next : ");
     Node p = findEntry(x.key);
     while (p.down!=null) {
       p=p.down;
     } 
-    println(" | get Next " + p.right.key);
     return p.right.value;
   }
 
-  public Segment getNext(Node x, Point y) {
-    print("find next : ");
-    Node p = findEntry(y);
-    print(p.key);
-    while (p.down!=null) {
-      p=p.down;
-    } 
-    println(" | get Next " + p.right.key);
-    return p.right.value;
-  }
 
   /********************************************************************
    *  This method will return the previous node
    *******************************************************************/
   public Segment getPrev(Node x) {
-    print("find prev : ");
     Node p = findEntry(x.key);
-    print(p.right.key);
     while (p.down!=null) {
       p=p.down;
     }    
-
-    println(" | get Prev " + p.left.key);
     return p.left.value;
   }
   
-  public Segment getPrev(Node x, Point y) {
-    print("find prev : ");
-    Node p = findEntry(x.key);
-    print(p.right.key);
-    while (p.down!=null) {
-      p=p.down;
-    }    
-
-    println(" | get Prev " + p.left.key);
-    return p.left.value;
-  }
   /********************************************************************
    *  This method will reutrn size of the List
    *******************************************************************/
@@ -181,10 +154,6 @@ class SkipList
   {
     Node p=findEntry(x.key);
     // node is not found
-    println("This is the key return by delete");
-    println(p.key);
-    println("This is the key input");
-    println(x.key);
     if (!p.key.equals(x.key)) {
       System.out.println("The node is not found");
       return;
@@ -208,16 +177,12 @@ class SkipList
   {
     Node ite;
     ite = head;
-    print("Head:" + ite.key + " ");
     while (ite.down!=null)
       ite=ite.down;
 
     while ( true ) {
       while ( !ite.right.key.equals(posInf) && !ite.key.equals(key))
-      {
-        print(">>>> " + ite.right.key + " ");
         ite = ite.right;
-      }
       return ite;
     }
   }
@@ -235,7 +200,7 @@ class SkipList
       {
         print(">>>> " + ite.right.key + " ");
         String result = Is_Above(ite.right.getValue(), p);
-        if (!result.substring(0, 1).equals("1")) 
+        if (result.substring(0, 1).equals("1")) 
           break;
         ite = ite.right;
       }
