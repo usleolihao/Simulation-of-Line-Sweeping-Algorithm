@@ -54,6 +54,16 @@ class SkipList
     return p.right.value;
   }
 
+  public Segment getNext(Node x, Point y) {
+    print("find next : ");
+    Node p = findEntry(y);
+    print(p.key);
+    while (p.down!=null) {
+      p=p.down;
+    } 
+    println(" | get Next " + p.right.key);
+    return p.right.value;
+  }
 
   /********************************************************************
    *  This method will return the previous node
@@ -69,7 +79,18 @@ class SkipList
     println(" | get Prev " + p.left.key);
     return p.left.value;
   }
+  
+  public Segment getPrev(Node x, Point y) {
+    print("find prev : ");
+    Node p = findEntry(x.key);
+    print(p.right.key);
+    while (p.down!=null) {
+      p=p.down;
+    }    
 
+    println(" | get Prev " + p.left.key);
+    return p.left.value;
+  }
   /********************************************************************
    *  This method will reutrn size of the List
    *******************************************************************/
@@ -156,14 +177,14 @@ class SkipList
   /********************************************************************
    *  This method will perform the delete for skip list
    *******************************************************************/
-  void delete(Node x, Point y)
+  void delete(Node x)
   {
     Node p=findEntry(x.key);
     // node is not found
-    print("This is the key return by function");
-    print(p.key);
-    print("This is the key input");
-    print(x.key);
+    println("This is the key return by delete");
+    println(p.key);
+    println("This is the key input");
+    println(x.key);
     if (!p.key.equals(x.key)) {
       System.out.println("The node is not found");
       return;

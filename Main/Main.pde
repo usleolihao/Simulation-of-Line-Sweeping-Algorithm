@@ -157,14 +157,14 @@ void TrigerEvents(Point p) {
     println("\n-------------Death Event : node  <" + k +">");
     //delete the segment from the skiplist
     // Check if its predecessor and successor intersect with each other
-    Segment next = T.getNext(event);
-    Segment prev =  T.getPrev(event);
+    Segment next = T.getNext(event, p);
+    Segment prev =  T.getPrev(event, p);
     if (next != null && prev != null) {
       PaintTwoLines(next, prev);
       comp1 = next;
       comp2 = prev;
     }
-    T.delete(event, p);
+    T.delete(event);
     T.printHorizontal();
     c.setOutput("Death Event : node  <" + k +">\n" + T.VisualizeList());
   }
