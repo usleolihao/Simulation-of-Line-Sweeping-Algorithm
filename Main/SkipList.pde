@@ -61,7 +61,6 @@ class SkipList
   public Segment getPrev(Node x) {
     print("find prev : ");
     Node p = findEntry(x.key);
-    print("This is the p which we have found");
     print(p.right.key);
     while (p.down!=null) {
       p=p.down;
@@ -103,7 +102,7 @@ class SkipList
     p.right=x;
     i=0;
 
-    while (r.nextDouble()<0.5)
+    while (r.nextDouble()<0.33)
     {
       {
         Node p1, p2;
@@ -213,13 +212,11 @@ class SkipList
     while ( true ) {
       while ( !ite.right.key.equals(posInf))
       {
-        if (Is_Above(ite.right.getValue(), p).equals("1")) {
-          print(">>>> " + ite.right.key + " ");
+        print(">>>> " + ite.right.key + " ");
+        String result = Is_Above(ite.right.getValue(), p);
+        if (!result.substring(0, 1).equals("1")) 
           break;
-        } else {
-          print(">>>> " + ite.right.key + " ");
-          ite = ite.right;
-        }
+        ite = ite.right;
       }
 
       if (ite.down != null )

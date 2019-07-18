@@ -23,7 +23,7 @@ def generateFiles(num):
 	filename = 'lines'
 	filetpye = '.in'
 	segment = list()
-	for i in range(5):
+	for i in range(num):
 		file = open(filename + str(i+1) + filetpye,'w')
 		file.write(generateLines())
 
