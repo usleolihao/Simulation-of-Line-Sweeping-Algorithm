@@ -7,30 +7,53 @@
  *                of the whole program to proccess the sweeping line algorithm.
  *
  *--------------------------------------------------------------------------------------*/
+
+/********************************************************************
+ *  Here are fields for I/O
+ *******************************************************************/
+// Arrays to hold our two sets of lines.
+static Segment[] SEG;
+// Arrays to hold our Points
+static Point[] Q;
+//The size of the Segment Lines
+int SegmentsTotal;
+
+/********************************************************************
+ *  Here are fields for SkipList
+ *  The status T must be stored as a SkipList.
+ *******************************************************************/
 public static String negInf = "-oo";  // This is the -inf key value
 public static String posInf = "+oo";  // This is the +inf key value
-
-Console c = new Console(50, 416, 16);
 SkipList T;
-Segment comp1 = null, comp2 = null, comp3 = null;
-ArrayList<Point> Intersections = new ArrayList<Point>();
 
+/********************************************************************
+ *  Here are fields for MinHeap
+ *******************************************************************/
+MinHeap H;
+
+/********************************************************************
+ *  Here are fields for GUI
+ *******************************************************************/
+ArrayList<Point> Intersections = new ArrayList<Point>();
 String filename = "";
 boolean stop = true;
+Console c = new Console(50, 416, 16);
+Segment comp1 = null, comp2 = null, comp3 = null;
 int SweepLine = -1;
+
+
 
 void settings() { 
   // Set the window size
   size(1200, 470);
 }
 
-
 void setup() {
   // Set up Title 
   surface.setTitle("Cs345 | Programming assignment #1. Detecting Intersections between Segments");
   smooth();
   c.activate();
-  Segments = new Segment[0];
+  SEG = new Segment[0];
 }
 
 void draw() {
@@ -51,7 +74,7 @@ void draw() {
   stroke(255);
   fill(255);
   rect(0, 0, 800, 400);
-  for (Segment seg : Segments) {
+  for (Segment seg : SEG) {
     seg.drawSegment(true);
   }
 
@@ -71,7 +94,7 @@ void draw() {
 
 /********************************************************************
  *  This method will set up keyboard to perform working on the GUI
-*******************************************************************/
+ *******************************************************************/
 void keyPressed()
 {
   if (keyAnalyzer(key).compareTo("LETTER") == 0 || keyAnalyzer(key).compareTo("NUMBER") == 0) {
@@ -102,7 +125,7 @@ void keyPressed()
 
 /********************************************************************
  *  This method perform a Sweep line algorithm once
-*******************************************************************/
+ *******************************************************************/
 void SweepOnce() {
   UnHighlight();
   if (Q == null) {
@@ -121,59 +144,11 @@ void SweepOnce() {
   }
 }
 
-/********************************************************************
- *  This method will perform the Event when sweeping the lines
-*******************************************************************/
-void TrigerEvents(Point p) {
-  //Events
-  String k = String.valueOf(p.name);
-
-
-  Node event = new Node(k, p.line);
-
-
-  if (p.isLeft()) {
-    println("\n-------------Born Event : node  <" + k +">");
-    // Check if this points intersects with its predecessor and successor
-    // Insert s to status
-    // find succ and pred and check Whether it is intersecting
-    T.insert(event, p);
-    T.printHorizontal();
-
-    Segment next = T.getNext(event);
-    Segment prev =  T.getPrev(event);
-    if (next != null) {
-      PaintTwoLines(next, p.line);
-      comp1 = next;
-      comp3 = p.line;
-    }
-    if (prev != null) {
-      PaintTwoLines(prev, p.line);
-      comp2 = prev;
-      comp3 = p.line;
-    }
-    c.setOutput("Born Event : node  <" + k +">\n" + T.VisualizeList());
-  } else {  // If it's a right end of its line
-    println("\n-------------Death Event : node  <" + k +">");
-    //delete the segment from the skiplist
-    // Check if its predecessor and successor intersect with each other
-    Segment next = T.getNext(event);
-    Segment prev =  T.getPrev(event);
-    if (next != null && prev != null) {
-      PaintTwoLines(next, prev);
-      comp1 = next;
-      comp2 = prev;
-    }
-    T.delete(event, p);
-    T.printHorizontal();
-    c.setOutput("Death Event : node  <" + k +">\n" + T.VisualizeList());
-  }
-}
 
 /********************************************************************
  *  This method is for paiting the comparing GUI and draw 
  *  the poitn of Intersection
-*******************************************************************/
+ *******************************************************************/
 void PaintTwoLines(Segment s1, Segment s2) {
   println("Comparing " + s1.name + " , " + s2.name);
   c.setTip("Comparing " + s1.name + " , " + s2.name);
@@ -184,13 +159,66 @@ void PaintTwoLines(Segment s1, Segment s2) {
     c.setTip( s1.name + " , " + s2.name + " are intersecting.");
     c.setRecord( s1.name + " , " + s2.name + " are intersecting.");
     DrawIntersectionPoint(s1, s2);
+  } else
+    c.setTip( s1.name + " , " + s2.name + " are not intersecting.");
+}
+
+/********************************************************************
+ *  This method is getting the input file name read segments
+ *******************************************************************/
+boolean GetSegments() {
+  if (c.readString().equals("") && filename.equals("")) {
+    c.setTip("File name can not be Empty");
+    return false;
+  } 
+  filename = !c.readString().equals("") ? c.readString() + ".in" : filename;
+  File f = new File(sketchPath(filename));
+  boolean exist = f.isFile();
+  //println(f.getPath(), exist);
+  if (exist) {
+    c.reset();
+    Intersections = new ArrayList<Point>();
+    T = new SkipList();
+    SweepLine = -1;
+    H = new MinHeap(2 * SegmentsTotal);
+    makeSegmentsAppear(filename);
+    c.setTip("Successful Loaded");
+    return true;
+  } else {
+    c.setTip("File is not exist.");
+    return false;
   }
+}
+
+/********************************************************************
+ *  This method will reset the Canvas
+ *******************************************************************/
+void resetCanvas() {
+  SEG = new Segment[0];
+  Q = new Point[0];
+  Intersections = new ArrayList<Point>();
+  SweepLine = -1;
+  c.reset();
+  c.setTip("Cleaned.");
+  surface.setTitle("Enter a new Segment File | Programming assignment #1.");
+}
+
+/********************************************************************
+ *  This method is unhighlight the line that we after sweep
+ *******************************************************************/
+void UnHighlight() {
+  if (comp1 != null)
+    comp1.unhighlight();
+  if (comp2 != null)
+    comp2.unhighlight();
+  if (comp3 != null) 
+    comp3.unhighlight();
 }
 
 /********************************************************************
  *  This method is calculating the point that intersect with two segment
  *  then give the point of Intersection
-*******************************************************************/
+ *******************************************************************/
 void DrawIntersectionPoint(Segment s1, Segment s2) {
   s1.Intersection();
   s2.Intersection();
@@ -213,55 +241,4 @@ void DrawIntersectionPoint(Segment s1, Segment s2) {
     float intersectionY = y1 + (uA * (y2-y1));
     Intersections.add(new Point(intersectionX, intersectionY));
   }
-}
-
-/********************************************************************
- *  This method is unhighlight the line that we after sweep
-*******************************************************************/
-void UnHighlight() {
-  if (comp1 != null)
-    comp1.unhighlight();
-  if (comp2 != null)
-    comp2.unhighlight();
-  if (comp3 != null) 
-    comp3.unhighlight();
-}
-
-/********************************************************************
- *  This method is getting the input file name read segments
-*******************************************************************/
-boolean GetSegments() {
-  if (c.readString().equals("") && filename.equals("")) {
-    c.setTip("File name can not be Empty");
-    return false;
-  } 
-  filename = !c.readString().equals("") ? c.readString() + ".in" : filename;
-  File f = new File(sketchPath(filename));
-  boolean exist = f.isFile();
-  //println(f.getPath(), exist);
-  c.reset();
-  Intersections = new ArrayList<Point>();
-  SweepLine = -1;
-  if (exist) {
-    makeSegmentsAppear(filename);
-    T = new SkipList();
-    c.setTip("Successful Loaded");
-    return true;
-  } else {
-    c.setTip("File is not exist.");
-    return false;
-  }
-}
-
-/********************************************************************
- *  This method will reset the Canvas
-*******************************************************************/
-void resetCanvas() {
-  Segments = new Segment[0];
-  Q = new Point[0];
-  Intersections = new ArrayList<Point>();
-  SweepLine = -1;
-  c.reset();
-  c.setTip("Cleaned.");
-  surface.setTitle("Enter a new Segment File | Programming assignment #1.");
 }

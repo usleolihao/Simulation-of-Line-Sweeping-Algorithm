@@ -41,7 +41,6 @@ class Segment {
   public String name;
   private Point p1, p2;
   private boolean intersection = false;
-  private color prevColor;
 
   // Initialize a line with no pre-set color
   Segment(String name, float x1Cord, float y1Cord, float x2Cord, float y2Cord) {
@@ -69,7 +68,6 @@ class Segment {
     lineColor = newSegmentsColor;
     this.name = name;
   }
-
 
   // Getters
   public float getX1() { 
@@ -105,12 +103,11 @@ class Segment {
     y2 = newValue;
   }
   public void highlight() { 
-    prevColor = lineColor;
     lineColor = color(64, 20, 60);
   }
   public void unhighlight() { 
-    //lineColor = color(182, 125, 67);
-    lineColor = prevColor;
+    lineColor = color(182, 125, 67);
+    //lineColor = prevColor;
   }
 
   public void Intersection() { 

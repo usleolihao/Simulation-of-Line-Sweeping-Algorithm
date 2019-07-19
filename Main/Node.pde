@@ -28,7 +28,12 @@ class Node
   public Segment getValue() {
     return this.value;
   }
-
+  public Node getNext(){
+  return this.right;
+  }
+  public Node getPrev(){
+  return this.left;
+  }
   //get Key of the node
   public String getKey() { 
     return this.key;
