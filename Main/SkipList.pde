@@ -44,26 +44,43 @@ class SkipList
   /********************************************************************
    *  This method will return the segment that next the point
    *******************************************************************/
-  public Segment getNext(Node x) {
+  public Node getNext(Node x) {
     Node p = findEntry(x.key);
     while (p.down!=null) {
       p=p.down;
     } 
-    return p.right.value;
+    return p.right;
   }
+
+  public Node getNext(Point x) {
+    Node p = findEntry(x);
+    while (p.down!=null) {
+      p=p.down;
+    } 
+    return p.right;
+  }
+
 
 
   /********************************************************************
    *  This method will return the previous node
    *******************************************************************/
-  public Segment getPrev(Node x) {
+  public Node getPrev(Node x) {
     Node p = findEntry(x.key);
     while (p.down!=null) {
       p=p.down;
     }    
-    return p.left.value;
+    return p.left;
   }
-  
+
+  public Node getPrev(Point x) {
+    Node p = findEntry(x);
+    while (p.down!=null) {
+      p=p.down;
+    }    
+    return p.left;
+  }
+
   /********************************************************************
    *  This method will reutrn size of the List
    *******************************************************************/
@@ -158,8 +175,9 @@ class SkipList
       System.out.println("The node is not found");
       return;
     }
-    while (p.down != null)
+    while (p.down != null) {
       p = p.down;
+    }
     // link the left to right from level 0
     while (p !=null) {
       p.left.right = p.right;
@@ -190,32 +208,40 @@ class SkipList
   /********************************************************************
    *  This method will perform to find a Entry for skiplist
    *******************************************************************/
-  public Node findEntry(Point p)
-  {
+  public Node findEntry(Point p) {
     Node ite;
-    ite = head;
-    print("Head:" + ite.key + " ");
-    while ( true ) {
-      while ( !ite.right.key.equals(posInf))
-      {
-        print(">>>> " + ite.right.key + " ");
-        String result = Is_Above(ite.right.getValue(), p);
-        if (result.substring(0, 1).equals("1")) 
+    ite=head;
+    print("Head  >>> "+ ite.key);
+    //print(ite.getNext());
+    while (true) {
+      if (ite.getNext()!=null) {
+        while ((!ite.getNext().key.equals(posInf))) {
+          if (Is_Above(ite.right.getValue(), p).equals("1")) {
+            ite=ite.getNext();
+            print(" >>> " + ite.key);
+          } else if (p.line.y1>ite.getNext().getValue().y1) {
+            println("Nope, we haven't reached the destination");
+            ite=ite.getNext();
+            print(" >>> " + ite.key);
+          } else if (p.line==ite.getNext().getValue()) { 
+            ite=ite.getNext();
+            print(" >>> " + ite.key);
+            //println("We have found the node");
+            break;
+          } else {
+            //println("\nNext node is too big for me to continue");
+            break;
+          }
+        }
+        if (ite.down!=null)
+        {
+          ite=ite.down;
+        } else {
           break;
-        ite = ite.right;
-      }
-
-      if (ite.down != null )
-      {  
-        println();
-        ite = ite.down;
-      } else {
-        print(">>>> " + ite.right.key + " ");
-        break;
+        }
       }
     }
-    // p.key <= key 
-    println("| Node: " + ite.key);
+    println(" >>> " + tail.key);
     return ite;
   }
 

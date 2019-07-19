@@ -5,18 +5,24 @@ void TrigerEvents(Point p) {
   //Events
   String k = String.valueOf(p.name);
   Node event = new Node(k, p.line);
+
+  // Queue Event
+  H.add(p);
+  H.printHeap();
+  //H.printRelation();
+
   if (p.isLeft()) { 
-    println("\n-------------Born Event : node  <" + k +">");
-    //Queue Event into MinHeap;
-    H.add(p);
-    H.printHeap();
-    H.printRelation();
+    println("-------------Born Event : node  <" + k +">-----------------");
     // Insert s to status
     T.insert(event, p);
     T.printHorizontal();
+    while(event.down != null)
+      event = event.down;
+    Node Prev = event.left;
+    Segment SUCC = Prev.value == null? null : Prev.value;
+    Node Next = event.right;
+    Segment PRED = Next.value == null? null : Next.value;
     // find succ and pred and check Whether it is intersecting
-    Segment SUCC = succ(p, T);
-    Segment PRED =  pred(p, T);
     if (SUCC != null) {
       PaintTwoLines(SUCC, p.line);
       comp1 = SUCC;
@@ -32,43 +38,70 @@ void TrigerEvents(Point p) {
     }
     c.setOutput("Born Event : node  <" + k +">\n" + T.VisualizeList());
   } else {  // If it's a right end of its line
-    println("\n-------------Death Event : node  <" + k +">");
-    //Pop out Event from MinHeap;
-    println("Heap Remove - " + H.remove().name);
-    //delete the segment from the skiplist
+    println("-------------Death Event : node  <" + k +">-----------------");
+    T.printHorizontal();
+    H.printHeap();
+
+    Segment SUCC = succ(p, event);
+    Segment PRED = pred(p, event);
+
     // Check if its predecessor and successor intersect with each other
-    Segment next = T.getNext(event);
-    Segment prev =  T.getPrev(event);
-    if (next != null && prev != null) {
-      PaintTwoLines(next, prev);
-      comp1 = next;
-      comp2 = prev;
+    if (SUCC != null && PRED != null) {
+      PaintTwoLines(SUCC, PRED);
+      comp1 = SUCC;
+      comp2 = PRED;
     }
+    //delete the segment from the skiplist
     T.delete(event);
     T.printHorizontal();
     c.setOutput("Death Event : node  <" + k +">\n" + T.VisualizeList());
   }
 }
 
-
-Segment succ (Point p, SkipList T) { 
-  Point succ = H.getEvent(H.rightChild(H.getPos()/4));
-  if (p.equals(succ) || succ == null)
-    return null;
-  Segment s= T.findEntry(succ.name).value;
-  println("Succ : " + succ.name + " " + s.name);
+//find the Segment just Below which must be the Prev One
+Segment pred(Point p, Node event) {
+  double dis = 999999;
+  println("find PrevNode: ");
+  Node ite = T.getNext(event);
+  Segment s = ite.value == null ? null : ite.value;
+  if ( s != null) {
+    dis = Is_Above2(s, p);
+    println(ite.key + " dis: " + dis );
+  }
+  while (!(ite.value == null) && !ite.right.key.equals(posInf) && Is_Above(ite.right.value,p).equals("1")) {
+    ite = ite.right;
+    double dis2 = Is_Above2(ite.value, p);
+    print(" >>> " + ite.key + " dis: " + dis2);
+    if (dis2 < dis && dis2 != 0) {
+      dis = dis2;
+      s = ite.value;
+    }
+  }
+  println("\nPred : " + (s==null ? null: s.name));
   return s;
 }
 
-Segment pred (Point p, SkipList T) {
-  Point pred = H.getEvent(H.leftChild(H.getPos()/4));
-  if (p.equals(pred) || pred ==null)
-    return null;
-  Segment s = T.findEntry(pred.name).value;
-  println("Pred : " + pred.name+ " " + s.name);
+Segment succ(Point p, Node event) {
+    double dis = 999999;
+  println("find PrevNode: ");
+  Node ite = T.getPrev(event);
+  Segment s = ite.value;
+  if ( s != null) {
+    dis = Is_Above2(s, p);
+    println(ite.key + " dis: " + dis );
+  }
+  while (!(ite.value == null) && !ite.left.key.equals(negInf) && Is_Above(ite.left.value,p).equals("-1")) {
+    ite = ite.left;
+    double dis2 = Is_Above2(ite.value, p);
+    print(" >>> " + ite.key + " dis: " + dis2);
+    if (dis2 < dis && dis2 != 0) {
+      dis = dis2;
+      s = ite.value;
+    }
+  }
+  println("\nSucc : " + (s==null ? null: s.name));
   return s;
 }
-
 /********************************************************************
  *  This method will get all points from the segment and sort them
  *   And print the Points sorted before and after
@@ -88,17 +121,18 @@ void GetAllPointsAndSort() {
   printAllPoints(Q);
   c.setTip("Points has been sorted");
 
+  /*
   for (Point p : Q) {
-    H.add(p);
-    H.printHeap();
-  }
-  H.printRelation();
-  for (Point p : Q) {
-    println("remove " + H.remove().name);
-    H.printHeap();
-  }
-  
-  
+   println("------------add------------------");
+   H.add(p);
+   H.printHeap();
+   }
+   H.printRelation();
+   for (Point p : Q) {
+   println("remove " + H.remove().name);
+   H.printHeap();
+   }
+   */
 }
 
 /********************************************************************

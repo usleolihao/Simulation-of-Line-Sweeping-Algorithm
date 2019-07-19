@@ -175,13 +175,13 @@ boolean GetSegments() {
   File f = new File(sketchPath(filename));
   boolean exist = f.isFile();
   //println(f.getPath(), exist);
-  c.reset();
-  Intersections = new ArrayList<Point>();
-  SweepLine = -1;
   if (exist) {
-    makeSegmentsAppear(filename);
+    c.reset();
+    Intersections = new ArrayList<Point>();
     T = new SkipList();
+    SweepLine = -1;
     H = new MinHeap(2 * SegmentsTotal);
+    makeSegmentsAppear(filename);
     c.setTip("Successful Loaded");
     return true;
   } else {

@@ -1,3 +1,5 @@
+#author Lihao Guo
+
 import random
 
 def generateLines(**options):
@@ -25,12 +27,12 @@ def generateFiles(num):
 	segment = list()
 	for i in range(num):
 		file = open(filename + str(i+1) + filetpye,'w')
-		file.write(generateLines())
+		file.write(generateLines(nums = 5))
 
 
 def main():
 	# num = input("Please input number of files that you wana generate")
-	num = 2
+	num = 5
 	generateFiles(num)
 
 if __name__ == '__main__':

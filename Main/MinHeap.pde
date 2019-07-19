@@ -18,7 +18,7 @@ public class MinHeap {
   } 
 
   public Point getEvent(int i) {
-    return i>= pos ? null:Heap[i];
+    return (i<0||i>=pos)?null:Heap[i];
   }
 
   public int getPos() {
@@ -52,10 +52,12 @@ public class MinHeap {
     Heap[j] = tmp;
   } 
 
-  boolean add(Point x) {
+  void add(Point x) {
+    if (pos <= Heap.length) {
+      Heap = Arrays.copyOf(Heap, Heap.length +  1);
+    };
     Heap[pos++] = x;
     bubbleUp(pos-1);
-    return true;
   } 
 
   void bubbleUp(int i) {
@@ -66,6 +68,7 @@ public class MinHeap {
       p = parent(i);
     }
   }
+
 
   boolean compare(Point x1, Point x2) {
     return x1.y <= x2.y;
@@ -108,8 +111,9 @@ public class MinHeap {
   public void printHeap() 
   { 
     print("HEAP CONTAINS :");
-    for (int i=0; i<pos; i++) 
-      print(Heap[i].name + " ");
+    for (int i=0; i<pos; i++)
+      print(Heap[i] == null? "null " : Heap[i].name + " ");
+
     println();
   }
 

@@ -89,8 +89,20 @@ public String Is_Above(Segment line, Point p) {
   double slope = (line.y2 - line.y1) / (line.x2 - line.x1);
   double newY = slope * (p.x - line.x1); 
   newY += line.y1;
-  if (p.y > newY) return "1:" + (int)(p.y-newY);
-  if (p.y < newY) return "2:" + (int)(newY-p.y);
+  if (p.y > newY) return "1";
+  if (p.y < newY) return "2";
   if (p.y - newY < .05 || p.y - newY > -.05) return "0";
   return "ERROR";
+}
+
+public double Is_Above2(Segment line, Point p) {
+  if (p.x < line.x1) return 0;
+  if (p.x > line.x2) return 0;
+  double slope = (line.y2 - line.y1) / (line.x2 - line.x1);
+  double newY = slope * (p.x - line.x1); 
+  newY += line.y1;
+  if (p.y > newY) return (p.y-newY);
+  if (p.y < newY) return (newY-p.y);
+  if (p.y - newY < .05 || p.y - newY > -.05) return 0;
+  return 0;
 }
